@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannabis Label Generator Tool Telegram @VTeasy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 2rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 300px;
+            max-width: 42rem;
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+
+        .card-header h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        textarea.form-control.ingredients {
+            min-height: 100px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .card-footer {
+            background-color: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom-left-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-outline {
+            background-color: white;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover {
+            background-color: #f3f4f6;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Stili per il preview dell'etichetta */
+        .label-preview {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            flex: 1;
+            min-width: 300px;
+            max-width: 42rem;
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+        }
+
+        .label-preview h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-content {
+            border: 2px dashed #2563eb;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+        }
+
+        .preview-header {
+            text-align: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .preview-header h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-section {
+            margin-bottom: 1rem;
+        }
+
+        .preview-section h4 {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .preview-section p {
+            color: #4b5563;
+            white-space: pre-wrap;
+        }
+
+        .preview-dates {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-footer {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #e2e8f0;
+            font-style: italic;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>Cannabis Label Generator Tool Dev: @VTeasy</h2>
+        </div>
+        <div class="card-content">
+            <form id="labelForm">
+                <div class="form-group">
+                    <label for="name">Nome del Cannabis</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ingredients">Qualità e Ingredienti</label>
+                    <textarea id="ingredients" name="ingredients" class="form-control ingredients" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="allergens">Allergeni</label>
+                    <textarea id="allergens" name="allergens" class="form-control" required></textarea>
+                </div>
+
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="preparationDate">Data di Impacchettamento</label>
+                        <input type="date" id="preparationDate" name="preparationDate" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="expiryDate">Data di Scadenza</label>
+                        <input type="date" id="expiryDate" name="expiryDate" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="storageTemp">Temperatura di Conservazione</label>
+                    <input type="text" id="storageTemp" name="storageTemp" class="form-control" placeholder="es. 20-25°C" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="chefNotes">Note</label>
+                    <textarea id="chefNotes" name="chefNotes" class="form-control"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-outline" onclick="clearForm()">Cancella</button>
+            <button type="button" class="btn btn-primary" onclick="generateLabel()">Genera Etichetta</button>
+        </div>
+    </div>
+
+    <div class="label-preview">
+        <h2>Anteprima Etichetta</h2>
+        <div class="preview-content">
+            <div class="preview-header">
+                <h3 id="previewName">Nome del Piatto</h3>
+            </div>
+            
+            <div class="preview-section">
+                <h4>Qualità e Ingredienti:</h4>
+                <p id="previewIngredients">-</p>
+            </div>
+
+            <div class="preview-section">
+                <h4>Allergeni:</h4>
+                <p id="previewAllergens">-</p>
+            </div>
+
+            <div class="preview-dates">
+                <div class="preview-section">
+                    <h4>Data di Impacchettamento:</h4>
+                    <p id="previewPrepDate">-</p>
+                </div>
+                <div class="preview-section">
+                    <h4>Da consumare entro il:</h4>
+                    <p id="previewExpDate">-</p>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <h4>Conservare a:</h4>
+                <p id="previewTemp">-</p>
+            </div>
+
+            <div class="preview-footer">
+                <p id="previewNotes">Note dello Chef: -</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funzione per formattare la data
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('it-IT', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        // Funzione per aggiornare il preview in tempo reale
+        function updatePreview() {
+            document.getElementById('previewName').textContent = 
+                document.getElementById('name').value || 'Nome della Cannabis ';
+            
+            document.getElementById('previewIngredients').textContent = 
+                document.getElementById('ingredients').value || '-';
+            
+            document.getElementById('previewAllergens').textContent = 
+                document.getElementById('allergens').value || '-';
+            
+            document.getElementById('previewPrepDate').textContent = 
+                formatDate(document.getElementById('preparationDate').value);
+            
+            document.getElementById('previewExpDate').textContent = 
+                formatDate(document.getElementById('expiryDate').value);
+            
+            document.getElementById('previewTemp').textContent = 
+                document.getElementById('storageTemp').value || '-';
+            
+            document.getElementById('previewNotes').textContent = 
+                'Note: ' + (document.getElementById('chefNotes').value || '-');
+        }
+
+        // Aggiungi event listener a tutti i campi del form
+        const formInputs = document.querySelectorAll('#labelForm input, #labelForm textarea');
+        formInputs.forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+
+        function clearForm() {
+            document.getElementById('labelForm').reset();
+            updatePreview();
+        }
+
+        function generateLabel() {
+            const formData = {
+                name: document.getElementById('name').value,
+                ingredients: document.getElementById('ingredients').value,
+                allergens: document.getElementById('allergens').value,
+                preparationDate: document.getElementById('preparationDate').value,
+                expiryDate: document.getElementById('expiryDate').value,
+                storageTemp: document.getElementById('storageTemp').value,
+                chefNotes: document.getElementById('chefNotes').value
+            };
+
+            if (!validateForm(formData)) {
+                alert('Per favore compila tutti i campi obbligatori');
+                return;
+            }
+
+            // Qui potresti aggiungere la logica per stampare o salvare l'etichetta
+            alert('Etichetta generata con successo!');
+            console.log('Dati etichetta:', formData);
+        }
+
+        function validateForm(data) {
+            return data.name && 
+                   data.ingredients && 
+                   data.allergens && 
+                   data.preparationDate && 
+                   data.expiryDate && 
+                   data.storageTemp;
+        }
+
+        // Inizializza il preview
+        updatePreview();
+    </script>
+</body>
+</html>
